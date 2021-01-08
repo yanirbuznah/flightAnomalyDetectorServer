@@ -44,6 +44,7 @@ public:
 
 class UploadTimeSeries : public Command {
 public:
+
     using Command::Command;
 
     void execute() override {

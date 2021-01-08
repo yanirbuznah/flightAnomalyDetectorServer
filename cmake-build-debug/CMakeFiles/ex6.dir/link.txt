@@ -1,1 +1,0 @@
-/usr/bin/c++  -g   CMakeFiles/ex6.dir/main.cpp.o CMakeFiles/ex6.dir/server.cpp.o  -o ex6 
