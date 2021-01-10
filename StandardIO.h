@@ -1,9 +1,6 @@
-//
-// Created by yanir on 31/12/2020.
-//
 
-#ifndef EX4_STANDARDIO_H
-#define EX4_STANDARDIO_H
+#ifndef STANDARDIO_H
+#define STANDARDIO_H
 
 #include "commands.h"
 class StandardIO: public DefaultIO{
@@ -17,4 +14,4 @@ public:
 };
 
 
-#endif //EX4_STANDARDIO_H
+#endif //STANDARDIO_H

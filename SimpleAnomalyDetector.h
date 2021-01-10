@@ -1,9 +1,6 @@
-//
-// Created by yanir on 29/12/2020.
-//
 
-#ifndef EX4_SIMPLEANOMALYDETECTOR_H
-#define EX4_SIMPLEANOMALYDETECTOR_H
+#ifndef SIMPLEANOMALYDETECTOR_H
+#define SIMPLEANOMALYDETECTOR_H
 
 #include "anomaly_detection_util.h"
 #include "AnomalyDetector.h"
@@ -48,4 +45,4 @@ public:
 
 
 
-#endif //EX4_SIMPLEANOMALYDETECTOR_H
+#endif //SIMPLEANOMALYDETECTOR_H

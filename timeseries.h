@@ -1,9 +1,6 @@
-//
-// Created by yanir on 29/12/2020.
-//
 
-#ifndef EX4_TIMESERIES_H
-#define EX4_TIMESERIES_H
+#ifndef TIMESERIES_H
+#define TIMESERIES_H
 
 
 #include <string>
@@ -36,4 +33,4 @@ private:
 
 
 
-#endif //EX4_TIMESERIES_H
+#endif //TIMESERIES_H

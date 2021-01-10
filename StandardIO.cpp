@@ -1,6 +1,3 @@
-//
-// Created by yanir on 31/12/2020.
-//
 
 #include "StandardIO.h"
 void StandardIO::write(string text){

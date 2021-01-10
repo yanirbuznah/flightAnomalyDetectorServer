@@ -1,9 +1,6 @@
-//
-// Created by yanir on 29/12/2020.
-//
 
-#ifndef EX4_MINCIRCLE_H
-#define EX4_MINCIRCLE_H
+#ifndef MINCIRCLE_H
+#define MINCIRCLE_H
 #include <iostream>
 #include <vector>
 #include <stdlib.h>     /* srand, rand */
@@ -13,12 +10,6 @@
 using namespace std;
 
 
-// ------------ DO NOT CHANGE -----------
-//class Point{
-//public:
-//	float x,y;
-//	Point(float x,float y):x(x),y(y){}
-//};
 class Circle{
 public:
     Point center;
@@ -33,4 +24,4 @@ public:
 bool pointInsideCircle(Point &p, Circle &circle) ;
 Circle welzlAlgorithm(vector<Point> &points, int n, vector<Point> R) ;
 Circle findMinCircle(Point** points,size_t size);
-#endif //EX4_MINCIRCLE_H
+#endif //MINCIRCLE_H

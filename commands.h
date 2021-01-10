@@ -32,9 +32,9 @@ public:
 };
 class SocketIO: public DefaultIO{
     int _clientID;
-    int _fd;
+
 public:
-    SocketIO(int fd, int clientID):_fd(fd),_clientID(clientID){};
+    SocketIO(int clientID):_clientID(clientID){};
     string read() override{
         string serverInput="";
         char c=0;

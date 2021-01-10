@@ -26,10 +26,9 @@ void Server::start(ClientHandler &ch) throw(const char *) {
             if(aClient < 0)
                 throw "Accept failure!";
             cout << "Client connected" <<endl;
-            ch.handle(aClient,_fd);
+            ch.handle(aClient);
             close(aClient);
        }
-
         close(_fd);
     });
 

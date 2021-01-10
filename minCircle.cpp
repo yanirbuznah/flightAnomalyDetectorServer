@@ -1,8 +1,3 @@
-//
-// Created by yanir on 29/12/2020.
-//
-
-// 207631466	204752000
 
 #include "minCircle.h"
 #include <iostream>
@@ -12,8 +7,6 @@
 
 using namespace std;
 
-
-// you may add helper functions here
 float distance(Point &a, Point &b) {
     return sqrt(pow(a.x-b.x,2) + pow(a.y-b.y,2));
 }
