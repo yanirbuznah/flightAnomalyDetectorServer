@@ -16,7 +16,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-
+#include "commands.h"
+#include "CLI.h"
 
 
 using namespace std;
@@ -24,7 +25,7 @@ using namespace std;
 // edit your ClientHandler interface here:
 class ClientHandler{
 public:
-    virtual void handle(int clientID)=0;
+    virtual void handle(int clientID, int fd)=0;
 };
 
 
@@ -34,13 +35,16 @@ public:
 // edit your AnomalyDetectionHandler class here
 class AnomalyDetectionHandler:public ClientHandler{
 public:
-    virtual void handle(int clientID){
-        char bufffer[1024];
-        bzero(bufffer,1024);
-        int n= read(clientID, bufffer,100);
-        cout << bufffer <<endl;
-        const char* hello= "Hello from server";
-        send(clientID, hello,strlen(hello),0);
+    virtual void handle(int clientID, int fd){
+        SocketIO socketIO(fd,clientID);
+        CLI cli(&socketIO);
+        cli.start();
+//        char buffer[1024];
+//        bzero(buffer,1024);
+//        int n= read(clientID, buffer,100);
+//        cout << buffer <<endl;
+//        const char* hello= "Hello from server";
+//        send(clientID, hello,strlen(hello),0);
 
     }
 };
@@ -53,6 +57,7 @@ class Server {
     int _fd;
     sockaddr_in _server;
     sockaddr_in _client;
+    bool _stop = false;
     // you may add data members
 
 public:
@@ -62,17 +67,5 @@ public:
     void stop();
 };
 
-int main(){
-    try{
-        Server server(1234);
-        AnomalyDetectionHandler ch;
-        server.start(ch);
-        server.stop();
-    }   catch (const char * err){
-        cout << err << endl;
-    }
-    cout << "done" << endl;
-    return 0;
-}
 
 #endif //EX6_SERVER_H

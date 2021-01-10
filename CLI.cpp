@@ -14,13 +14,12 @@ void CLI::start(){
     while (true){
         _dio->write(
                 "Welcome to the Anomaly Detection Server.\n"
-                "Please choose an option:\n"
-                "1.upload a time series csv file\n"
-                "2.algorithm settings\n"
-                "3.detect anomalies\n"
-                "4.display results\n"
-                "5.upload anomalies and analyze results\n"
-                "6.exit\n");
+                "Please choose an option:\n");
+        for (pair<string,Command*> command: _commandMap){
+            string s = command.second->getDescription();
+            _dio->write(s);
+        }
+                _dio->write("6.exit\n");
         option = _dio->read();
         if (option == "6"){
             break;

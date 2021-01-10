@@ -8,6 +8,12 @@
 #include <vector>
 #include <map>
 #include <iomanip>
+
+#include <sys/socket.h>
+#include <iostream>
+#include <netinet/in.h>
+#include <unistd.h>
+
 #include "HybridAnomalyDetector.h"
 
 using namespace std;
@@ -24,12 +30,50 @@ public:
 
     virtual ~DefaultIO() {}
 };
+class SocketIO: public DefaultIO{
+    int _clientID;
+    int _fd;
+public:
+    SocketIO(int fd, int clientID):_fd(fd),_clientID(clientID){};
+    string read() override{
+        string serverInput="";
+        char c=0;
+        ::read(_clientID,&c,sizeof(char));
+        while(c!='\n'){
+            serverInput+=c;
+            ::read(_clientID,&c,sizeof(char));
+        }
+        return serverInput;
+    }
+    void write(string text) override{
+
+        ::write(_clientID,text.c_str(),text.length());
+    }
+    void write(float f) override{
+        string fString = to_string(f);
+        fString.erase(fString.find_last_not_of('0') + 1, std::string::npos);
+        ::write(_clientID,fString.c_str(),fString.length());
+    }
+    void read(float* f) override{
+        string serverInput="";
+        char c=0;
+        ::read(_clientID,&c,sizeof(char));
+        while(c!='\n'){
+            serverInput+=c;
+            ::read(_clientID,&c,sizeof(char));
+        }
+        *f = stof( serverInput);
+    }
+    ~SocketIO() override{}
+
+};
 
 class Command {
 protected:
     DefaultIO *_dio;
     HybridAnomalyDetector *_detector;
     vector<AnomalyReport> *_anomalyReports;
+    string _description;
 public:
     Command(DefaultIO *dio, vector<AnomalyReport> *anomalyReports, HybridAnomalyDetector *anomalyDetector):_dio(dio),
     _anomalyReports(anomalyReports),_detector(anomalyDetector) {}
@@ -37,16 +81,16 @@ public:
     Command();
 
     virtual void execute() = 0;
-
+    virtual string getDescription()=0;
     virtual ~Command() {}
+
 };
 
 
 class UploadTimeSeries : public Command {
+    string _description = "1.upload a time series csv file\n";
 public:
-
     using Command::Command;
-
     void execute() override {
         string text;
         ofstream anomalyTrain("anomalyTrain.csv");
@@ -71,9 +115,13 @@ public:
         if (anomalyTest.is_open())
             anomalyTest.close();
     }
+    string getDescription(){
+        return _description;
+    }
 };
 
 class AlgorithmSettings : public Command {
+    string _description = "2.algorithm settings\n";
 public:
     using Command::Command;
 
@@ -94,9 +142,13 @@ public:
         } while (true);
 
     }
+    string getDescription(){
+        return _description;
+    }
 };
 
 class DetectAnomalies : public Command {
+    string _description = "3.detect anomalies\n";
 public:
     using Command::Command;
 
@@ -107,9 +159,13 @@ public:
         *_anomalyReports = _detector->detect(anomalyTestTs);
         _dio->write("anomaly detection complete.\n");
     }
+    string getDescription(){
+        return _description;
+    }
 };
 
 class DisplayResults : public Command {
+    string _description = "4.display results\n";
 public:
     using Command::Command;
 
@@ -121,9 +177,13 @@ public:
         }
         _dio->write("Done.\n");
     }
+    string getDescription(){
+        return _description;
+    }
 };
 
 class UploadAndAnalyze : public Command {
+    string _description = "5.upload anomalies and analyze results\n";
 public:
     using Command::Command;
 
@@ -197,6 +257,9 @@ public:
         _dio->write("False Positive Rate: ");
         _dio->write(falseAlaramRate);
         _dio->write("\n");
+    }
+    string getDescription(){
+        return _description;
     }
 };
 
